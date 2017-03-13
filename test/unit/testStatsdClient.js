@@ -16,13 +16,13 @@ var statsdClient = proxyquire('lib/clients/statsd.js', {
 });
 
 exports.test_buildStatsDMessages = function(done) {
-  process.env.FH_APPNAME = 'testapp';
   var client = statsdClient.init({});
   var data = {
     type: types.G,
-    key: 'testKey',
+    key: 'test-metrics-key',
     tags: {
-      'a': 'b'
+      'a': 'b',
+      'e': 3
     },
     fields: {
       'c': 1,
@@ -32,8 +32,31 @@ exports.test_buildStatsDMessages = function(done) {
 
   var messages = client.buildMessages(data);
   assert.equal(messages.length, 2);
-  assert.ok(messages.indexOf('testKey-a_is_b-id_is_testapp_app-c:1|g') > -1);
-  assert.ok(messages.indexOf('testKey-a_is_b-id_is_testapp_app-d:2|g') > -1);
+  assert.ok(messages.indexOf('test-metrics-key-a_is_b-e_is_3-c:1|g') > -1);
+  assert.ok(messages.indexOf('test-metrics-key-a_is_b-e_is_3-d:2|g') > -1);
+  done();
+};
+
+exports.test_customise_key_builder = function(done) {
+  var client = statsdClient.init({
+    keyBuilder: function(key, tags, field) {
+      return [key, tags.name, field].join(';');
+    }
+  });
+  var data = {
+    type: types.G,
+    key: 'test-key-builder',
+    tags: {
+      name: 'a',
+      another: 'b'
+    },
+    fields : {
+      'c': '1'
+    }
+  };
+  var messages = client.buildMessages(data);
+  assert.equal(messages.length, 1);
+  assert.equal(messages[0], "test-key-builder;a;c:1|g");
   done();
 };
 
