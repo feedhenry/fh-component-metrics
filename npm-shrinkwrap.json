@@ -1,6 +1,6 @@
 {
   "name": "fh-component-metrics",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "dependencies": {
     "async": {
       "version": "2.1.5",
