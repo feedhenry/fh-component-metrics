@@ -15,7 +15,8 @@ var statsdClient = proxyquire('lib/clients/statsd.js', {
   }
 });
 
-exports.test_buildMessages = function(done) {
+exports.test_buildStatsDMessages = function(done) {
+  process.env.FH_APPNAME = 'testapp';
   var client = statsdClient.init({});
   var data = {
     type: types.G,
@@ -31,12 +32,12 @@ exports.test_buildMessages = function(done) {
 
   var messages = client.buildMessages(data);
   assert.equal(messages.length, 2);
-  assert.ok(messages.indexOf('testKey-ab-c:1|g') > -1);
-  assert.ok(messages.indexOf('testKey-ab-d:2|g') > -1);
+  assert.ok(messages.indexOf('testKey-a_is_b-id_is_testapp_app-c:1|g') > -1);
+  assert.ok(messages.indexOf('testKey-a_is_b-id_is_testapp_app-d:2|g') > -1);
   done();
 };
 
-exports.test_send = function(done) {
+exports.test_statsDSend = function(done) {
   socketStub.yieldsAsync();
   var client = statsdClient.init({});
   client.send({key:'testKey', fields:{'a': 1}});
