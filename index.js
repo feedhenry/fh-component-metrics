@@ -13,7 +13,8 @@ module.exports = function metrics(conf) {
     "memory": confEnabled ? require('./lib/memory')(clients) : nothing,
     "gauge": confEnabled ? require('./lib/gauge')(clients) : nothing,
     "inc": confEnabled ? counter.inc : nothing,
-    "dec": confEnabled ? counter.dec : nothing
+    "dec": confEnabled ? counter.dec : nothing,
+    "timer": confEnabled ? require('./lib/timer')(clients) : nothing
   };
 };
 
