@@ -12,7 +12,7 @@ https://github.com/StackPointCloud/docker-influxdb
 The 2.x version of this component is compatible with 0.10 release of Influxdb. It is using the line protocol to send metrics data over UDP port. Please make sure UDP is enabled in the Influxdb configurations.
 
 
-# Usage Guide
+# Usage Guide 
 
 Here are the steps to use this module in an existing RHMAP component:
 
