@@ -11,7 +11,6 @@ https://github.com/StackPointCloud/docker-influxdb
 
 The 2.x version of this component is compatible with 0.10 release of Influxdb. It is using the line protocol to send metrics data over UDP port. Please make sure UDP is enabled in the Influxdb configurations.
 
-
 # Usage Guide
 
 Here are the steps to use this module in an existing RHMAP component:
@@ -47,7 +46,7 @@ Here are the steps to use this module in an existing RHMAP component:
    //the metrics data will be sent to both the influxdb and statsd backend
    ```
 
-At the moment, it only supports Influxdb and Statsd, so the only options for the `type` field are `influxdb` and `statsd`.
+At the moment, it supports Influxdb, Statsd and redis, so the valid options for the `type` field are `influxdb`, `statsd` and `redis`. See the next section for more details about the available options for each type.
 
 4. To capture API time, you can add the timingMiddleware to an existing express app like this:
 
@@ -71,3 +70,30 @@ At the moment, it only supports Influxdb and Statsd, so the only options for the
       ...
     }
     ```
+
+# Configuration Options for Each Backend Type
+
+## Influxdb
+
+* host: the host of the influxdb
+* port: the port of the influxdb. It has to be a UDP port.
+
+## Statsd
+
+* host: the host of the statsd server
+* port: the port of the statsd server. It has to be a UDP port.
+* keyBuilder: a function that will allow override how the metric key is being built. If not provided, a default function will be provided. See [statsd.js](./lib/clients/statsd.js) for more details.
+
+NOTE: each metric will be formatted as described in this [spec](https://github.com/b/statsd_spec) before sending to the server.
+
+## Redis
+
+* redisClient: an instance of https://github.com/NodeRedis/node_redis#rediscreateclient. 
+* recordsToKeep: how many records to keep in redis
+* namespace: a prefix that will be added to each metric key
+
+NOTE: each record will be added to a list in Redis. The key for the list is the metric name. Each record will is a stringified JSON object, with the follow fields:
+
+* tags
+* fields
+* ts
