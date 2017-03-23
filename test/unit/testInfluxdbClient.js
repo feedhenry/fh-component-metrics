@@ -41,7 +41,7 @@ exports.test_buildMessages = function(done) {
   };
 
   var messages = influxUpd.buildMessages(data);
-  var expected = 'testKey,a\\,b=tag1,c\\ d=tag2,e\\,f\\ =tag3,k=1\\ 2,l=value\\=value1 g=1,h\\,i=3.4,j="\\"testvalue\\"" ' + ts + '\n';
+  var expected = 'testKey,a\\,b=tag1,c\\ d=tag2,e\\,f\\ =tag3,k=1\\ 2,l=value\\=value1 g=1,h\\,i=3.4,j="\\"testvalue\\"" ' + ts*1e6 + '\n';
   assert.equal(messages[0], expected);
   done();
 };
