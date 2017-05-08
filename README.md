@@ -97,3 +97,7 @@ NOTE: each record will be added to a list in Redis. The key for the list is the 
 * tags
 * fields
 * ts
+
+# Limitations
+
+CPU metrics are supported only on Linux based operating systems.
