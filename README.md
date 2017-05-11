@@ -25,7 +25,7 @@ Here are the steps to use this module in an existing RHMAP component:
 
     ```
     var fhComponentMetrics = require('fh-component-metrics');
-    var metricsConf = {enabled: true, host: '1.2.3.4', port: 2003};
+    var metricsConf = {enabled: true, host: '1.2.3.4', port: 2003, baseTags: {appId: process.env.APPID}};
     var metrics = fhComponentMetrics(metricsConf);
     var TITLE = 'myTestComponent';
     metrics.memory(TITLE, { interval: 2000 }, function(err) {
@@ -41,7 +41,7 @@ Here are the steps to use this module in an existing RHMAP component:
 
    ```
    var fhComponentMetrics = require('fh-component-metrics');
-   var metricsConf = {enabled: true, backends:[{type: 'influxdb', host: '1.2.3.4', port: 2003}, {type: 'statsd', host: '1.2.3.4', port: 2004}];
+   var metricsConf = {enabled: true, backends:[{type: 'influxdb', host: '1.2.3.4', port: 2003}, {type: 'statsd', host: '1.2.3.4', port: 2004}], baseTags: {appId: process.env.APPID}};
    var metrics = fhComponentMetrics(metricsConf);
    //the metrics data will be sent to both the influxdb and statsd backend
    ```
@@ -52,7 +52,7 @@ At the moment, it supports Influxdb, Statsd and redis, so the valid options for 
 
     ```
     var fhComponentMetrics = require('fh-component-metrics');
-    var metricsConf = {enabled: true, host: '1.2.3.4', port: 2003};
+    var metricsConf = {enabled: true, host: '1.2.3.4', port: 2003, baseTags: {appId: process.env.APPID}};
     var app = express();
     app.use(fhComponentMetrics.timingMiddleware('myExpressApp', metricsConf));
     ```
