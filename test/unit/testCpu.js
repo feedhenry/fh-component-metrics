@@ -9,7 +9,8 @@ var mocks = {
   }
 };
 
-var metrics = proxyquire('index.js', mocks)({enabled: true, host: '127.0.0.1'});
+var idField = "testCpu";
+var metrics = proxyquire('index.js', mocks)({enabled: true, host: '127.0.0.1', baseTags: {id: idField}});
 var component = 'testComponent';
 
 var customGetUsage = function(cb) {
@@ -38,6 +39,7 @@ exports.cpu_should_send_valid_object = function(finish) {
     assert.ok(data.hasOwnProperty('tags'));
     assert.equal(data.tags.hostname, os.hostname());
     assert.equal(data.tags.workerId, 'master');
+    assert.equal(data.tags.id, idField);
     if (!called) {
       called = true;
       finish();
