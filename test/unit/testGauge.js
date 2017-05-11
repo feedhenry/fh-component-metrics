@@ -5,7 +5,8 @@ var clientsMock =  {
   send: function() {}
 };
 
-var timed = require('gauge')(clientsMock, types.G);
+var idField = 'testgauge';
+var timed = require('gauge')(clientsMock, types.G, {id: idField});
 
 exports.timed_should_send_valid_object = function(done) {
   timed('testKey', {route: '/api/test'}, 100, function(err, data) {
@@ -16,6 +17,7 @@ exports.timed_should_send_valid_object = function(done) {
     assert.ok(data.hasOwnProperty('fields'));
     assert.equal(data.fields.value, 100);
     assert.equal(data.tags.route, '/api/test');
+    assert.equal(data.tags.id, idField);
     done();
   });
 };
